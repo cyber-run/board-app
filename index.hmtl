@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Board Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="gameBoard"></div>
+<button id="generateBtn">Generate Board</button>
+<p id="pathInfo"></p>
+
+<script src="script.js"></script>
+</body>
+</html>
