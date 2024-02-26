@@ -8,14 +8,19 @@
 .square {
     width: 50px;
     height: 50px;
+    border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
 }
 
+.path {
+    background-color: yellow; /* Choose a color that stands out */
+}
+
+
+/* Additional styles for start, goal, blocked, and normal squares */
 .start { background-color: green; }
 .goal { background-color: red; }
 .blocked { background-color: black; }
-.normal { background-color: lightgray; }
-.path { background-color: yellow; }
+.normal { background-color: white; }
