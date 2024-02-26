@@ -1,26 +1,77 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #1c1c1c; /* Set the background color */
+    color: white; /* Make text color white */
+    font-family: 'Roboto', sans-serif; /* Apply the Roboto font */
+}
+
+#generateBtn {
+    padding: 10px 20px; /* Add padding to the button */
+    background-color: #4CAF50; /* Set the background color */
+    border: none; /* Remove the border */
+    color: white; /* Set the text color */
+    font-size: 16px; /* Set the font size */
+    cursor: pointer; /* Add a pointer cursor */
+    border-radius: 5px; /* Round the corners a bit */
+}
+
+#gameContainer {
+    position: relative;
+    display: inline-block;
+    text-align: center; /* Center the contents */
+}
+
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(4, 50px);
-    grid-template-rows: repeat(6, 50px);
+    grid-template-columns: repeat(4, 50px); /* Adjust number of columns as needed */
+    grid-template-rows: repeat(6, 50px); /* Adjust number of rows as needed */
     gap: 5px;
 }
 
 .square {
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 5px; /* Round the corners a bit */
 }
 
-.path {
-    background-color: yellow; /* Choose a color that stands out */
+.start { 
+    background-color: rgb(255, 243, 68); 
 }
 
+.goal { 
+    background-color: rgb(0, 165, 74); 
+}
 
-/* Additional styles for start, goal, blocked, and normal squares */
-.start { background-color: green; }
-.goal { background-color: red; }
-.blocked { background-color: black; }
-.normal { background-color: white; }
+.blocked { 
+    background-color: rgb(255, 88, 88); 
+}
+
+.normal { 
+    background-color: rgb(238, 238, 238); 
+}
+
+svg#pathOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+}
+
+#generateBtn {
+    margin-top: 20px; /* Adds space between the board and the button */
+    cursor: pointer;
+}
+
+#pathInfo {
+    margin-top: 10px;
+}
