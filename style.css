@@ -1,22 +1,18 @@
 body {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
     margin: 0;
     background-color: #1c1c1c; /* Set the background color */
     color: white; /* Make text color white */
     font-family: 'Roboto', sans-serif; /* Apply the Roboto font */
 }
 
-#generateBtn {
-    padding: 10px 20px; /* Add padding to the button */
-    background-color: #4CAF50; /* Set the background color */
-    border: none; /* Remove the border */
-    color: white; /* Set the text color */
-    font-size: 16px; /* Set the font size */
-    cursor: pointer; /* Add a pointer cursor */
-    border-radius: 5px; /* Round the corners a bit */
+#gameHeader {
+    position: relative;
+    display: inline-block;
+    text-align: center; /* Center the contents */
 }
 
 #gameContainer {
@@ -27,23 +23,57 @@ body {
 
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(4, 50px); /* Adjust number of columns as needed */
-    grid-template-rows: repeat(6, 50px); /* Adjust number of rows as needed */
-    gap: 5px;
+    grid-template-columns: repeat(4, 75px); /* Increase square size */
+    grid-template-rows: repeat(6, 75px); /* Increase square size */
+    gap: 6px; /* Slightly larger gap */
 }
 
 .square {
-    width: 50px;
-    height: 50px;
+    width: 75px; /* Increased size */
+    height: 75px; /* Increased size */
     border: 1px solid rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 5px; /* Round the corners a bit */
+    border-radius: 6px; /* Slightly larger radius for rounded corners */
+}
+
+.start, .goal, .blocked, .normal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px; /* Consistency in rounding corners */
+}
+
+#generateBtn {
+    padding: 12px 24px; /* Increase padding */
+    background-color: #4CAF50; /* Set the background color */
+    border: none; /* Remove the border */
+    color: white; /* Set the text color */
+    font-size: 18px; /* Increase font size */
+    cursor: pointer; /* Add a pointer cursor */
+    border-radius: 6px; /* Slightly larger radius for rounded corners */
+    margin-top: 20px; /* Adds space between the board and the button */
+}
+
+#pathInfo {
+    font-size: 16px; /* Increase font size */
+    margin-top: 12px; /* Slightly more space after the button */
+}
+
+svg#pathOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
 }
 
 .start { 
-    background-color: rgb(255, 243, 68); 
+    background-color: rgb(71, 83, 252); /* 255, 243, 68 */
 }
 
 .goal { 
@@ -56,22 +86,4 @@ body {
 
 .normal { 
     background-color: rgb(238, 238, 238); 
-}
-
-svg#pathOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    width: 100%;
-    height: 100%;
-}
-
-#generateBtn {
-    margin-top: 20px; /* Adds space between the board and the button */
-    cursor: pointer;
-}
-
-#pathInfo {
-    margin-top: 10px;
 }

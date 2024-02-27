@@ -103,8 +103,8 @@ function displayBoard(board, path) {
     }
 
     // Assuming each square is 50x50 pixels and there's a 5px gap between squares
-    const squareSize = 50;
-    const gapSize = 5;
+    const squareSize = 75;
+    const gapSize = 6;
 
     // Calculate and draw the path
     path.forEach((point, index) => {
@@ -124,8 +124,8 @@ function displayBoard(board, path) {
             line.setAttribute('y1', y1);
             line.setAttribute('x2', x2);
             line.setAttribute('y2', y2);
-            line.setAttribute('stroke', 'blue'); // Use any color you like
-            line.setAttribute('stroke-width', '2'); // Adjust the stroke width as needed
+            line.setAttribute('stroke', '#4753fc'); // Use any color you like
+            line.setAttribute('stroke-width', '3'); // Adjust the stroke width as needed
 
             svgOverlay.appendChild(line);
         }
