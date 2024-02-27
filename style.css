@@ -1,24 +1,23 @@
 body {
-    display: grid;
+    display: flex;
+    flex-direction: column; /* Align items vertically */
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 100vh;
     margin: 0;
     background-color: #1c1c1c; /* Set the background color */
     color: white; /* Make text color white */
     font-family: 'Roboto', sans-serif; /* Apply the Roboto font */
 }
 
-#gameHeader {
+#gameContainer {
     position: relative;
     display: inline-block;
     text-align: center; /* Center the contents */
 }
 
-#gameContainer {
-    position: relative;
-    display: inline-block;
-    text-align: center; /* Center the contents */
+#headerContainer {
+    text-align: center;
 }
 
 #gameBoard {
