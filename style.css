@@ -25,6 +25,7 @@ body {
     grid-template-columns: repeat(4, 75px); /* Increase square size */
     grid-template-rows: repeat(6, 75px); /* Increase square size */
     gap: 6px; /* Slightly larger gap */
+    margin-bottom: 15px;
 }
 
 .square {
@@ -55,6 +56,7 @@ body {
     cursor: pointer; /* Add a pointer cursor */
     border-radius: 6px; /* Slightly larger radius for rounded corners */
     margin-top: 20px; /* Adds space between the board and the button */
+    margin-bottom: 10px; /* Adds space between the board and the button */
 }
 
 #pathInfo {
@@ -85,4 +87,57 @@ svg#pathOverlay {
 
 .normal { 
     background-color: rgb(238, 238, 238); 
+}
+
+.star-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.star {
+    font-size: 50px;
+    color: #ccc;
+    margin: 0 4px;
+}
+
+.star.filled {
+    color: gold;
+}
+
+#scoringInfo {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#infoToggle {
+    background-color: #1c1c1c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#infoContent {
+    background-color: #1c1c1c;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: -30px;
+    margin-left: 10px;
+    text-align: left;
+    font-size: 18px;
+}
+
+.score-details {
+    margin-top: 0px;
+    text-align: center;
+}
+
+.score-details p {
+    margin: 5px 0;
 }

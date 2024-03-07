@@ -5,20 +5,19 @@ document.getElementById("generateBtn").addEventListener("click", function() {
 function generateBoard() {
     const rows = 6;
     const cols = 4;
-    let board, path = [];
+    let board, pathResult;
 
-    // Attempt to generate a solvable board
     do {
         board = generateInitialBoard(rows, cols);
         placeSpecialSquares(board);
-        path = findShortestPath(board);
-    } while (path.length === 0); // Continue if no path found
+        pathResult = findShortestPath(board);
+    } while (pathResult.path.length === 0);
 
-    // A solvable board has been generated, display it
-    displayBoard(board, path);
-    displayPathInfo(path);
+    displayBoard(board, pathResult.path);
+    pathResult.changesInDirection = calculateChangesInDirection(pathResult.path);
+    const difficulty = calculateDifficulty(pathResult.path.length, pathResult.changesInDirection, pathResult.deadEnds);
+    displayDifficulty(difficulty, pathResult.path.length, pathResult.changesInDirection, pathResult.deadEnds);
 }
-
 
 function generateInitialBoard(rows, cols) {
     let board = new Array(rows).fill(null).map(() => new Array(cols).fill('normal'));
@@ -55,10 +54,9 @@ function placeSpecialSquares(board) {
     }
 }
 
-
 function findShortestPath(board) {
-    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]]; // Including diagonals
-    let start, goal;
+    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+    let start, goal, deadEnds = new Set();
     for (let row = 0; row < board.length; row++) {
         for (let col = 0; col < board[0].length; col++) {
             if (board[row][col] === 'start') start = { row, col };
@@ -73,18 +71,35 @@ function findShortestPath(board) {
         let path = queue.shift();
         let { row, col } = path[path.length - 1];
 
-        if (row === goal.row && col === goal.col) return path;
+        let neighbors = getNeighbors(board, { row, col }, directions);
+        if (neighbors.length === 1 && board[row][col] !== 'start' && board[row][col] !== 'goal') {
+            deadEnds.add(`${row},${col}`);
+        }
 
-        for (let [dRow, dCol] of directions) {
-            let newRow = row + dRow, newCol = col + dCol;
-            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length && 
-                board[newRow][newCol] !== 'blocked' && !visited.has(`${newRow},${newCol}`)) {
-                visited.add(`${newRow},${newCol}`);
-                queue.push([...path, { row: newRow, col: newCol }]);
+        for (let neighbor of neighbors) {
+            if (!visited.has(`${neighbor.row},${neighbor.col}`)) {
+                visited.add(`${neighbor.row},${neighbor.col}`);
+                queue.push([...path, neighbor]);
             }
         }
+
+        if (row === goal.row && col === goal.col) {
+            return { path, deadEnds };
+        }
     }
-    return [];
+    return { path: [], deadEnds };
+}
+
+function getNeighbors(board, current, directions) {
+    let neighbors = [];
+    for (let [dRow, dCol] of directions) {
+        let newRow = current.row + dRow, newCol = current.col + dCol;
+        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length &&
+            board[newRow][newCol] !== 'blocked') {
+            neighbors.push({ row: newRow, col: newCol });
+        }
+    }
+    return neighbors;
 }
 
 function displayBoard(board, path) {
@@ -132,26 +147,73 @@ function displayBoard(board, path) {
     });
 }
 
+function displayPathInfo(pathResult) {
+    const infoElement = document.getElementById('pathInfo');
+    const path = pathResult.path;
+    const changesInDirection = pathResult.changesInDirection;
 
+    infoElement.innerHTML  = `Path found!<br>Length: ${path.length-1}<br>Turns: ${changesInDirection}`;
+}
+
+// Assuming path is an array of {row, col} objects
+function calculateChangesInDirection(path) {
+    let changesInDirection = 0;
+    if (path.length > 2) { // Need at least 3 points to start comparing direction changes
+        for (let i = 2; i < path.length; i++) {
+            const dir1 = getDirection(path[i - 2], path[i - 1]);
+            const dir2 = getDirection(path[i - 1], path[i]);
+            if (dir1 !== dir2) {
+                changesInDirection++;
+            }
+        }
+    }
+    return changesInDirection;
+}
 
 function getDirection(current, next) {
     const rowDiff = next.row - current.row;
     const colDiff = next.col - current.col;
-    if (rowDiff === 1) return 'path-down';
-    if (rowDiff === -1) return 'path-up';
-    if (colDiff === 1) return 'path-right';
-    if (colDiff === -1) return 'path-left';
-    // Add more conditions here for diagonal directions if necessary
+    if (rowDiff === 1 && colDiff === 0) return 'down';
+    if (rowDiff === -1 && colDiff === 0) return 'up';
+    if (colDiff === 1 && rowDiff === 0) return 'right';
+    if (colDiff === -1 && rowDiff === 0) return 'left';
+    // Include conditions for diagonal directions if needed
+    if (rowDiff === 1 && colDiff === 1) return 'down-right';
+    if (rowDiff === 1 && colDiff === -1) return 'down-left';
+    if (rowDiff === -1 && colDiff === 1) return 'up-right';
+    if (rowDiff === -1 && colDiff === -1) return 'up-left';
 }
 
+function calculateDifficulty(pathLength, changesInDirection, deadEnds) {
+    console.log(deadEnds);
+    let score = (pathLength - 1) + (changesInDirection * 2) + (deadEnds.size * 1.5);
+    console.log(`Path Length: ${pathLength}, Changes in Direction: ${changesInDirection}, Dead Ends: ${deadEnds}, Score: ${score}`);
 
-function displayPathInfo(path) {
-    const infoElement = document.getElementById('pathInfo');
-    if (path.length > 0) {
-        infoElement.textContent = `Path found with ${path.length} steps.`;
-    } else {
-        infoElement.textContent = 'No path found.';
+    if (score < 10.5) return 'Easy';
+    else if (score < 16) return 'Medium';
+    else return 'Hard';
+}
+
+function displayDifficulty(difficulty, pathLength, changesInDirection, deadEnds) {
+    const difficultyElement = document.getElementById('difficulty');
+    if (!difficultyElement) {
+        const newElement = document.createElement('div');
+        newElement.id = 'difficulty';
+        document.body.appendChild(newElement);
     }
+
+    const difficultyLevel = difficulty.toLowerCase();
+    const starElements = createStarElements(difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 2 : 3);
+
+    document.getElementById('difficulty').innerHTML = '';
+    document.getElementById('difficulty').appendChild(starElements);
+
+    const infoContent = document.getElementById('infoContent');
+    infoContent.innerHTML = `
+        <p>Path Length: ${pathLength-1}</p>
+        <p>Turns: ${changesInDirection}</p>
+        <p>Traps: ${Array.from(deadEnds).join(', ')}</p>
+    `;
 }
 
 function shuffleArray(array) {
@@ -160,3 +222,32 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+
+function createStarElements(difficulty) {
+    const starContainer = document.createElement('div');
+    starContainer.className = 'star-container';
+
+    for (let i = 0; i < 3; i++) {
+        const star = document.createElement('span');
+        star.className = 'star';
+        star.textContent = '★';
+
+        if (i < difficulty) {
+            star.classList.add('filled');
+        }
+
+        starContainer.appendChild(star);
+    }
+
+    return starContainer;
+}
+
+function toggleScoreInfo() {
+    const infoContent = document.getElementById('infoContent');
+    const isVisible = infoContent.style.display === 'block';
+
+    infoContent.style.display = isVisible ? 'none' : 'block';
+    document.getElementById('infoToggle').textContent = isVisible ? '► Show Board Info' : '▼ Hide Board Info';
+}
+
+document.getElementById('infoToggle').addEventListener('click', toggleScoreInfo);
