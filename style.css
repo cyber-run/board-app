@@ -118,7 +118,7 @@ svg#pathOverlay {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 6px;
 }
@@ -130,7 +130,7 @@ svg#pathOverlay {
     margin-top: -30px;
     margin-left: 10px;
     text-align: left;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .score-details {
