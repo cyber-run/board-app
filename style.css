@@ -3,39 +3,58 @@ body {
     flex-direction: column; /* Align items vertically */
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px;
     background-color: #1c1c1c; /* Set the background color */
     color: white; /* Make text color white */
     font-family: 'Roboto', sans-serif; /* Apply the Roboto font */
+    box-sizing: border-box;
 }
 
 #gameContainer {
     position: relative;
     display: inline-block;
     text-align: center; /* Center the contents */
+    width: 90%; /* Reduce from 100% to 90% */
+    max-width: 500px; /* Reduce from 600px to 500px */
 }
 
 #headerContainer {
     text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+#headerContainer h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem); /* Responsive font size */
+}
+
+#headerContainer p {
+    font-size: clamp(1rem, 3vw, 1.2rem);
 }
 
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(4, 75px); /* Increase square size */
-    grid-template-rows: repeat(6, 75px); /* Increase square size */
-    gap: 6px; /* Slightly larger gap */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: min(1.5vw, 6px); /* Slightly smaller gap */
     margin-bottom: 15px;
+    width: 100%;
+    aspect-ratio: 4/6;
+    margin: 0 auto 15px; /* Center the board */
 }
 
 .square {
-    width: 75px; /* Increased size */
-    height: 75px; /* Increased size */
+    width: 100%;
+    height: 100%;
     border: 1px solid rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px; /* Slightly larger radius for rounded corners */
+    border-radius: min(1.5vw, 6px); /* Responsive border radius */
+    min-height: 40px; /* Minimum height */
 }
 
 .start, .goal, .blocked, .normal {
@@ -44,24 +63,32 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px; /* Consistency in rounding corners */
+    border-radius: min(1.5vw, 6px);
 }
 
 #generateBtn {
-    padding: 12px 24px; /* Increase padding */
-    background-color: #4CAF50; /* Set the background color */
-    border: none; /* Remove the border */
-    color: white; /* Set the text color */
-    font-size: 18px; /* Increase font size */
-    cursor: pointer; /* Add a pointer cursor */
-    border-radius: 6px; /* Slightly larger radius for rounded corners */
-    margin-top: 20px; /* Adds space between the board and the button */
-    margin-bottom: 10px; /* Adds space between the board and the button */
+    padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    cursor: pointer;
+    border-radius: min(1.5vw, 6px);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width: auto;
+    min-width: 180px;
+}
+
+#generateBtn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
 }
 
 #pathInfo {
-    font-size: 16px; /* Increase font size */
-    margin-top: 12px; /* Slightly more space after the button */
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    margin-top: 12px;
 }
 
 svg#pathOverlay {
@@ -93,10 +120,11 @@ svg#pathOverlay {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 15px 0;
 }
 
 .star {
-    font-size: 50px;
+    font-size: clamp(30px, 8vw, 50px);
     color: #ccc;
     margin: 0 4px;
 }
@@ -108,29 +136,37 @@ svg#pathOverlay {
 #scoringInfo {
     margin-top: 20px;
     text-align: center;
+    width: 100%;
+    max-width: 600px;
 }
 
 #infoToggle {
-    background-color: #1c1c1c;
+    background-color: #333;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: min(1.5vw, 6px);
+    transition: background-color 0.3s;
+}
+
+#infoToggle:hover {
+    background-color: #555;
 }
 
 #infoContent {
-    background-color: #1c1c1c;
-    padding: 20px;
-    border-radius: 4px;
-    margin-top: -30px;
-    margin-left: 10px;
+    background-color: #333;
+    padding: 15px;
+    border-radius: min(1.5vw, 6px);
+    margin-top: 10px;
     text-align: left;
-    font-size: 16px;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .score-details {
@@ -140,4 +176,50 @@ svg#pathOverlay {
 
 .score-details p {
     margin: 5px 0;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 600px) {
+    #gameBoard {
+        gap: 4px;
+    }
+    
+    .square {
+        border-radius: 4px;
+    }
+    
+    #difficulty {
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 400px) {
+    body {
+        padding: 10px;
+    }
+    
+    #headerContainer h1 {
+        margin-bottom: 10px;
+    }
+    
+    #generateBtn {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+/* For larger screens */
+@media (min-width: 1200px) {
+    #gameContainer {
+        max-width: 550px; /* Reduce from 700px to 550px */
+    }
+    
+    #headerContainer {
+        max-width: 900px;
+    }
+}
+
+/* Add a bit more space around the difficulty indicator */
+#difficulty {
+    margin: 10px 0;
 }
